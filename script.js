@@ -1,4 +1,6 @@
-// Navigation functionality
+// Navigation and UI functionality
+// This file handles the core website interactions, while analytics is handled by the analytics module
+
 document.addEventListener('DOMContentLoaded', function() {
     const header = document.querySelector('.header');
     const navToggle = document.querySelector('.nav__toggle');
@@ -27,6 +29,13 @@ document.addEventListener('DOMContentLoaded', function() {
         navToggle.addEventListener('click', function() {
             navMenu.classList.toggle('nav__menu--active');
             navToggle.classList.toggle('nav__toggle--active');
+            
+            // Track navigation toggle if analytics is available
+            if (window.analytics) {
+                window.analytics.track('mobile_menu_toggle', {
+                    action: navMenu.classList.contains('nav__menu--active') ? 'open' : 'close'
+                });
+            }
         });
     }
     
@@ -179,6 +188,15 @@ function initContactForm() {
                 return;
             }
             
+            // Track form submission attempt if analytics is available
+            if (window.analytics) {
+                window.analytics.track('contact_form_attempt', {
+                    service_interest: data.service,
+                    has_phone: !!data.phone,
+                    message_length: data.message ? data.message.length : 0
+                });
+            }
+            
             // Simulate form submission
             const submitButton = form.querySelector('.form__submit');
             const originalText = submitButton.textContent;
@@ -189,6 +207,13 @@ function initContactForm() {
             // Simulate API call
             setTimeout(() => {
                 submitButton.textContent = 'Message Sent!';
+                
+                // Track successful submission if analytics is available
+                if (window.analytics) {
+                    window.analytics.track('contact_form_success', {
+                        service_interest: data.service
+                    });
+                }
                 
                 // Show success message
                 alert('Thank you for your message! We\'ll get back to you within 24 hours.');
@@ -214,6 +239,16 @@ function initCalendlyWidget() {
     // document.head.appendChild(script);
     
     console.log('Calendly widget initialized (placeholder)');
+    
+    // Track Calendly interactions if available
+    document.addEventListener('click', function(e) {
+        const target = e.target.closest('.calendly-inline-widget, [class*="calendly"], [href*="calendly"]');
+        if (target && window.analytics) {
+            window.analytics.track('calendly_interaction', {
+                element_type: target.className || 'calendly_element'
+            });
+        }
+    });
 }
 
 // Newsletter form handling
@@ -231,6 +266,13 @@ function initNewsletterForm() {
                 return;
             }
             
+            // Track newsletter signup attempt if analytics is available
+            if (window.analytics) {
+                window.analytics.track('newsletter_signup_attempt', {
+                    email_domain: email.split('@')[1] || 'unknown'
+                });
+            }
+            
             const submitButton = form.querySelector('.newsletter__submit');
             const originalText = submitButton.textContent;
             
@@ -240,6 +282,13 @@ function initNewsletterForm() {
             // Simulate API call
             setTimeout(() => {
                 submitButton.textContent = 'Subscribed!';
+                
+                // Track successful newsletter signup if analytics is available
+                if (window.analytics) {
+                    window.analytics.track('newsletter_signup_success', {
+                        email_domain: email.split('@')[1] || 'unknown'
+                    });
+                }
                 
                 alert('Thank you for subscribing! You\'ll receive our weekly newsletter with strengths insights and tips.');
                 
