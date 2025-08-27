@@ -116,6 +116,7 @@ p {
     transition: all var(--transition-base);
     text-align: center;
     font-size: 1rem;
+    letter-spacing: 0.1em;
 }
 
 .btn--primary {
@@ -239,6 +240,17 @@ p {
     margin-top: var(--spacing-xl);
 }
 
+/* Center the 4th card (Team Synergy) when it's alone in its row */
+@media (min-width: 840px) {
+    .services__grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .service-card:nth-child(4) {
+        grid-column: 2 / 3;
+    }
+}
+
 .service-card {
     background: var(--color-white);
     padding: var(--spacing-xl);
@@ -345,9 +357,10 @@ p {
 }
 
 .contact__method a {
-    color: var(--color-primary);
+    color: #e89ab9; /* Slightly darker pink */
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 600;
+    font-size: 1.25rem;
 }
 
 .contact__method a:hover {
@@ -398,7 +411,7 @@ p {
 .footer {
     background: var(--color-gray-800);
     color: var(--color-white);
-    padding: var(--spacing-2xl) 0 var(--spacing-lg);
+    padding: var(--spacing-lg) 0;
 }
 
 .footer__content {
@@ -436,8 +449,6 @@ p {
 
 .footer__bottom {
     text-align: center;
-    padding-top: var(--spacing-lg);
-    border-top: 1px solid var(--color-gray-600);
 }
 
 .footer__bottom p {
